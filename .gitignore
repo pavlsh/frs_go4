@@ -22,3 +22,5 @@ src/G__*
 *.png
 *.sh
 file_loc
+src/foot/__foot_*
+src/foot/*.swp

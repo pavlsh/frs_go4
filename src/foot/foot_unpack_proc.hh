@@ -17,7 +17,7 @@ typedef uint16_t u16;
 typedef uint8_t u8; 
 
 #define _countof(x) ( sizeof x / sizeof *x )
-/* Hacks */
+/* H4cKs0r */
 #define __EMPTY()
 #define __DEREF(x) x __EMPTY()
 #define __EVAL(...) __VA_ARGS__
@@ -203,11 +203,11 @@ union foot_ch_data {
 			u32 j = 2 * i; \
 			u32 k = j; \
 			if(!is_comp) k = 64 * (j % 10) + j / 10; \
-			outp[k]	  = ch_data.adc1_2 << 8 |  ch_data.adc1_1 >> 2; \
+			outp[k]	  = ((ch_data.adc1_2 << 8) |  ch_data.adc1_1) / 4; \
 	 \
 			k = ++j; \
 			if(!is_comp) k = 64 * (j % 10) + j / 10; \
-			outp[k]	  = ch_data.adc2_2 << 8 |  ch_data.adc2_1 >> 2; \
+			outp[k]	  = ((ch_data.adc2_2 << 8) |  ch_data.adc2_1) / 4; \
 		} \
 	 \
 		u32 footer; \

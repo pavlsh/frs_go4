@@ -1,7 +1,7 @@
 #ifndef __GO4_FOOT_UNPACK_COMMON_HH__
 #define __GO4_FOOT_UNPACK_COMMON_HH__
 
-#define MAX_FOOT_I 32
+#define MAX_FOOT_I 30
 
 #define FOOT_RAW_DATA_WORDS 320 
 #define FOOT_CHN (2 * FOOT_RAW_DATA_WORDS)

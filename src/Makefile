@@ -11,9 +11,8 @@ endif
 # comment to switch on optimization
 DOOPTIMIZATION = false
 
-all: build foot_hh
+all: build
 
--include foot/foot.mk
 -include Module.mk
 
 build: all-$(MODULE_NAME)
@@ -79,3 +78,4 @@ install: all
 #	cp MainUserAnalysis ../exec
 
 include $(GO4SYS)/Makefile.rules
+include foot/foot.mk
