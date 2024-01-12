@@ -1,0 +1,409 @@
+Contents
+========
+
+1.  Purpose
+2.  License
+3.  Compression format
+4.  User routines
+5.  C function interface
+5a. Decompression in C
+5b. Compression in C
+6.  VHDL compression interface
+6a. Additional pipelining
+7.  Performance
+8.  Compilation and testing
+9.  Acknowledgements (referencing)
+10. Contact
+
+
+1. Purpose
+==========
+
+DPTC, difference predicted trace compression, is a simple bit-packed
+format to store flash-ADC traces (or other smooth data) in a space
+efficient manner.  It comes with a VHDL module for on-the-fly
+compression and with C routines for decompression and compression.
+
+
+2. License
+==========
+
+DPTC is free software; distributed under the 3-clause BSD license.
+
+For details, see the accompanying LICENSE file.
+
+
+3. Compression format
+=====================
+
+The input data consist of a sequence of n-bit data words.  Typically,
+n is 12, or 14.  The code currently allows n to have any value in the
+range 5 - 16, inclusive.
+
+For the compression to be efficient (i.e. space-saving), the data
+sequence should describe a smooth function, i.e. most consecutive
+values should have small differences.  This is typically the case with
+flash-ADC data from detectors that record pulses.
+
+The compression can logically be viewed as two steps: first a
+treatment of the data values, such that the modified values more
+easily can be stored compactly.  This is followed by the bit-packing.
+The first stage, treating each data value, is:
+
+- Calculate the difference to the previous value.
+
+  (Purpose: with smooth traces, the values to process further are then
+  centred around 0.)
+
+- If the previous three differences had the same sign, then instead
+  use the difference to the previous difference.
+
+  0 is considered to have no sign, so breaks such sequences.
+
+  (Purpose: when pulses are built up over many samples, especially
+  trailing decay parts, the double differencing removes the linear
+  component.  It makes the distribution more narrow around 0.
+  However, for flat parts of a trace (which only contains noise), the
+  double difference would lead to a wider distribution of values to
+  store.  Such flat parts change sign often, or have 0 differences,
+  and are thereby detected by the three-most-recent rule.)
+
+  Tests on actual data shows that this rule on average causes larger
+  storage space to be used.  It is therefore by default NOT enabled.
+
+- If the value to be stored is negative, change the sign of the
+  following values.  If positive, store the following values as are.
+  A 0 does not change how to store following values.
+
+  (Purpose: the later bit-encoding is asymmetric - it can with a
+  certain number of bits store one more negative value than positive.
+  This sign-changing scheme makes negative values more common than
+  positive values for flat (noise) parts of a trace.)
+
+Data is compressed in 32-bit words, being filled from the least
+significant bits.  When a value to store cannot fit, the overflowing
+bits are stored in the next 32-bit output word.
+
+Values are stored in groups of four.  All four values are
+stored using the same number of bits.  Before each group, a header
+gives the number of bits to store for each value that is encoded.
+Since the number of bits to use will often not change very much
+between adjacent groups, a short and long encoding of the number of bits is
+used.  The short group header consist of two bits.  If the value is 1,
+2 or 3, the number of bits to store for each value in the group is the
+same as in the previous group with a change of -1, 0 or +1 bits.  If
+the two-bit short header is 0, it is followed by the difference - 2,
+to not repeat codes handled by the short group header.  The long
+header difference is encoded using the number of bits needed to store
+at most n-3, i.e. 2 for n <= 7, 3 for n <= 11 and 4 for n <= 19.  The
+number of bits is interpreted with a bias of 1, meaning that storing 0
+bits per value is not supported.
+
+The data values are then stored with the given number of bits.  The
+value stored is relative to the most negative value that can be stored
+with that number of bits.  This is to simplify decoding, as the stored
+value only has to be unmasked, and the bias added.  (Storing directly
+would have required the decoder to fill with the sign bit).
+
+As an exception to the above rules, the first data value is stored
+verbatim, unconditionally, with n bits.  This to avoid having the
+entire first group of data values being stored with many bits, in case
+the baseline of the ADC trace is far from 0.
+
+It is the responsibility of the enclosing data format to keep track of
+both the number of original data bits, the number of original data
+values, as well as the number of data words produced by the
+compression.  These values used by the decompression procedure.
+
+In case the original data contains an excessive number of lower bits
+with noise, that shall not be stored, they must be shifted out of the
+original data before giving them to the compression routines.  Just
+masking them out will *not* improve the compression efficiency, as the
+compression routines effectively are looking for the most significant
+bit of the differences to be stored.  It is however quite harmless to
+use a compressor with n larger than necessary.  The loss in
+compression will be negligible.
+
+
+4. User routines
+=================
+
+Only the routines in the directories c/ and vhdl/ are needed for any
+user program or firmware.  The code in all other directories are for
+testing purposes.
+
+
+5. C function interface
+=======================
+
+The C interface consist of two functions.
+
+
+5a. Decompression in C
+======================
+
+The decompression is performed by one function:
+
+int dptc_unpack16(uint32_t *compr, size_t ncompr,
+                  uint16_t *output, size_t ndata,
+                  int bits)
+
+compr		Pointer to the compressed input buffer.
+ncompr		Number of elements in the input buffer.
+output		Pointer to a buffer to receive the decompressed values.
+ndata		Number of original/decompressed values.
+bits		Number of bits of each value that was stored.
+		This must be the same as the number used during
+		compression.
+
+On success, 0 is returned, otherwise a non-zero value.
+
+The decompression routine will not read items beyond the end of the
+source buffer even if it runs out of data (due to e.g. a corrupted
+data stream).  It will however report decompression failure.  Failure
+will also be reported if there are non-zero bits left in the input
+buffer, or entire words have not been used.
+
+A version that handles data words with more than 16 bits is also
+available, dptc_unpack32(), with uint32_t *output.
+
+
+5b. Compression in C
+====================
+
+A C compression routine is also available:
+
+size_t dptc_compress16(uint16_t *data, size_t ndata,
+                       uint32_t *compr, size_t ncompr,
+                       int bits)
+
+data		Pointer to a buffer with the original values.
+ndata		Number of original elements.
+compr		Pointer to the compressed output buffer.
+ncompr		Number of elements in the output buffer.
+bits		Number of bits to store of each value.
+
+Return value: the number of words written in the output buffer.
+
+A version that handles data words with more than 16 bits is also
+available, dptc_compress32(), with uint32_t *data.
+
+It is rather easy to calculate the worst-case number of output words
+that can be produced (to be done).  A safe value is to have ncompr =
+ndata.
+
+
+6. VHDL compression interface
+=============================
+
+The VHDL compression presents itself as a single entity to the user,
+configurable using a generic map.  The other entities are solely for
+internal use.  All identifiers that are exposed through work.* have
+dptc_ prefixes, to avoid clashing with other user code.
+
+The compression interface:
+
+entity dptc_module is
+    generic (predictor : integer := 0;
+             dc_cd_reg : integer := 0;
+             dc_pd_reg : integer := 0;
+             dc_od_reg : integer := 0;
+             ec_mc_reg : integer := 0;
+             ec_cb_reg : integer := 0;
+             op_ss_reg : integer := 0
+             );
+    port (clk:      in  std_logic;
+          reset:    in  std_logic;
+
+	  data_in:  in  std_logic_vector;
+          dv_in:    in  std_logic;
+          flush:    in  std_logic;
+
+          dv_out:   out std_logic;
+          out_word: out std_logic_vector;
+          done:     out std_logic
+    );
+end;
+
+clk		The clock network signal that drives the compression.
+		For the minimum period of this clock, see section 6a.
+
+reset		Used to reset the compression system between each
+		trace.  It needs to be held for at least 6 clock cycles
+		(and depends on extra pipeline registers).
+		It is suggested, although not required to hold it
+		until right before the first data value is provided.
+
+data_in		The data value to compress each clock cycle.  The
+		number of bits of the compressor is given by the
+		length of this std_logic_vector.
+
+dv_in		Set to '1' for each input data value to be compressed.
+		It is currently NOT valid to omit values by letting
+		'dv_in' be 0 during some cycles.
+
+flush		Must be set after last data word has been given, and
+		then held, in order to produce the last output data
+		words (even if not all 32 bits have been completely
+		filled).
+
+		It is valid to set 'flush' while 'dv_in' is still set.
+		But dv_in must not be set to '1' after 'dv_in' has
+		been '0' while flush is '1'.
+
+		'flush' must currently be set directly after the last
+		data value.
+
+out_word	Gives the compressed data words.
+
+dv_out		Marks when output words are produced.  The content of
+		'out_word' shall only be stored when 'dv_out' is '1'.
+
+done		Marks that all data words have been produced.  (It
+		will be set a number of cycles after 'flush' has been
+		set and no further input data has been given.)  Note
+		that a data word may be produced in the same cycle as
+		'done' is first set to '1', but not later.
+
+
+6a. Additional pipelining
+=========================
+
+The achievable minimum clock cycle period for an FPGA depends on the
+length of the longest logic chain between register latches.  Which
+logic expression becomes the longest depends on the model and grade of
+FPGA which is targeted.  In order to allow some flexibility in
+inserting pipeline stages in the code, a few generic parameters
+(..._reg in the interface above) control some optional pipeline
+stages.
+
+Generally, introducing a pipeline stage will cause more LUTs to be
+used, as well as flip-flops.
+
+Minimum period values for some FPGA kinds are extracted from synthesis
+of the code for those FPGA modules.  They can be found in the file
+min_periods.txt.
+
+The VHDL code will generally easily be configured to run the minimum
+period of the clock well below 10 ns (i.e. 100 MHz) even on 10-year
+old FPGAs, and reaching 5 ns with pipelining stages.  On modern FPGAs,
+going below 3 ns seems rather easy.
+
+
+7. Performance
+==============
+
+Both the C compression and decompression routines process samples at
+an almost constant rate (depending on CPU).  Some typical values:
+
+Machine        E3-1285v6  E3-1276v3  X5450      PPC 7455
+Speed          (4.5 GHz)  (4 GHz)    (3 GHz)    (1 GHz)
+Introduced     (2017)     (2014)     (2007)     (2002)
+			             
+Decompress C   2.2 ns     3.1 ns     6.2 ns     36 ns
+Compress C     3.3 ns     4.6 ns     8.8 ns     50 ns
+
+The values become easier to compare when expressed in clock cycles:
+
+Decompress C   10         12         19         36
+Compress C     15         18         26         50
+
+It should be noted that a decompression time per symbol of < 2.5 ns
+(achievable on modern hardware) corresponds to > 400 MS/s.  If
+compared to a raw storage using 16-bit words for each value, this
+produces > 800 MB/s decompressed data.
+
+
+8. Compilation and testing
+==========================
+
+Usage of the code as such does not involve any separate compilation
+steps.  The code is intended to be included into other projects either
+by symlinking or copying.
+
+The distribution includes a machinery to test the routines using
+sample and random data, as well as determining approximate minimum
+clock periods achievable using different pipelining options.
+
+The test machinery will build and test the C and VHDL codes using all
+values for n from 5 to 16, and all pipelining combinations.  The VHDL
+code is compiled using ghdl (http://ghdl.free.fr/).  To perform the
+tests:
+
+(cd traces ; ./mkgen.pl)
+rm -rf sim/
+make -j 12 runsim  # or 'short' instead of 'runsim' for a quicker test
+                   # and possibly add FEWBITS=1 FEWREGS=1
+
+The flag '-j 12' sets the number of jobs to run in parallel.  This may
+be omitted or changed, depending on the number of threads available on
+the testing machine.
+
+Determining approximate FPGA clocking capabilities requires that the
+development chain from the manufacturer can be accessed from the
+command line.
+
+To test with xilinx tools ('xst' must be accessible):
+
+rm -rf syntiming/
+make min_periods.txt -j 16
+
+Again, adjust the '-j 16' flag as appropriate.
+
+Some files with real traces are also included in the distribution.
+The compression efficiency can be tested for them (here with n=12 and
+n=16):
+
+make testpack_b12
+make testpack_b16
+
+To test the execution speed of the C routines:
+
+make testspeed_b16
+
+Recompiling with '-march=native' can have some effect:
+
+make clean && CFLAGS=-march=native make testspeed_b16
+
+
+9. Acknowledgements (referencing)
+=================================
+
+The recommended way to refer to DPTC, when used for work that is
+published in a research article, is to cite the following paper:
+
+G. Bruni and H. T. Johansson,
+DPTC - an FPGA-based trace compression,
+IEEE Transactions on Circuits and Systems I: Regular Papers,
+67(1) (2020), 189-197.
+
+Pre-print (2019) at arXiv:1903.10984.
+
+@ARTICLE{bruni2019,
+  author = {G. Bruni and H. T. Johansson},
+   title = {DPTC---An FPGA-Based Trace Compression}, 
+ journal = {IEEE Transactions on Circuits and Systems I: Regular Papers},
+    year = {2020},
+  volume = {67},
+  number = {1},
+   pages = {189-197},
+     doi = {10.1109/TCSI.2019.2945179}
+} 
+
+10. Contact
+===========
+
+Håkan T. Johansson                  e-mail: f96hajo@chalmers.se
+Subatomic and Plasma Physics
+Department of Physics
+Chalmers University of Technology
+412 96 Göteborg
+Sweden
+
+
+Giovanni Bruni                      e-mail: bruni.gvn@gmail.com
+Subatomic and Plasma Physics
+Department of Physics
+Chalmers University of Technology
+412 96 Göteborg
+Sweden

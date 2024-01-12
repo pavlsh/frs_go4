@@ -1,0 +1,54 @@
+TFRSAnlProc.cxx:1343:    tgt.mhtdc_sc21lr_dt = sci->mhtdc_factor_ch_to_ns*( rand3() + srt.tdc_sc21l[0]  -  srt.tdc_sc21r[0] );
+TFRSAnlProc.cxx:1344:    tgt.mhtdc_sc21lr_x  = tgt.mhtdc_sc21lr_dt * sci->mhtdc_factor_21l_21r + sci->mhtdc_offset_21l_21r;
+TFRSAnlProc.cxx:1358:    tgt.mhtdc_sc22lr_dt = sci->mhtdc_factor_ch_to_ns*( rand3() + srt.tdc_sc22l[0]  -  srt.tdc_sc22r[0] );
+TFRSAnlProc.cxx:1359:    tgt.mhtdc_sc22lr_x  = tgt.mhtdc_sc22lr_dt * sci->mhtdc_factor_22l_22r + sci->mhtdc_offset_22l_22r;
+TFRSAnlProc.cxx:1373:    tgt.mhtdc_sc41lr_dt = sci->mhtdc_factor_ch_to_ns*( rand3() + srt.tdc_sc41l[0]  -  srt.tdc_sc41r[0] );
+TFRSAnlProc.cxx:1374:    tgt.mhtdc_sc41lr_x  = tgt.mhtdc_sc41lr_dt * sci->mhtdc_factor_41l_41r + sci->mhtdc_offset_41l_41r;
+TFRSAnlProc.cxx:1382:    tgt.mhtdc_sc42lr_dt = sci->mhtdc_factor_ch_to_ns*( rand3() + srt.tdc_sc42l[0]  -  srt.tdc_sc42r[0] );
+TFRSAnlProc.cxx:1383:    tgt.mhtdc_sc42lr_x  = tgt.mhtdc_sc42lr_dt * sci->mhtdc_factor_42l_42r + sci->mhtdc_offset_42l_42r;
+TFRSAnlProc.cxx:1391:    tgt.mhtdc_sc43lr_dt = sci->mhtdc_factor_ch_to_ns*( rand3() + srt.tdc_sc43l[0]  -  srt.tdc_sc43r[0] );
+TFRSAnlProc.cxx:1392:    tgt.mhtdc_sc43lr_x  = tgt.mhtdc_sc43lr_dt * sci->mhtdc_factor_43l_43r + sci->mhtdc_offset_43l_43r;
+TFRSAnlProc.cxx:1400:    tgt.mhtdc_sc31lr_dt = sci->mhtdc_factor_ch_to_ns*( rand3() + srt.tdc_sc31l[0]  -  srt.tdc_sc31r[0] );
+TFRSAnlProc.cxx:1401:    tgt.mhtdc_sc31lr_x  = tgt.mhtdc_sc31lr_dt * sci->mhtdc_factor_31l_31r + sci->mhtdc_offset_31l_31r;
+TFRSAnlProc.cxx:1409:    tgt.mhtdc_sc81lr_dt = sci->mhtdc_factor_ch_to_ns*( rand3() + srt.tdc_sc81l[0]  -  srt.tdc_sc81r[0] );
+TFRSAnlProc.cxx:1410:    tgt.mhtdc_sc81lr_x  = tgt.mhtdc_sc81lr_dt * sci->mhtdc_factor_81l_81r + sci->mhtdc_offset_81l_81r;
+TFRSAnlProc.cxx:1417:    tgt.mhtdc_scM01lr_dt = sci->mhtdc_factor_ch_to_ns*( rand3() + srt.tdc_scM01l[0]  -  srt.tdc_scM01r[0] );
+TFRSAnlProc.cxx:1418:    tgt.mhtdc_scM01lr_x  = tgt.mhtdc_scM01lr_dt * sci->mhtdc_factor_M01l_M01r + sci->mhtdc_offset_M01l_M01r;
+TFRSAnlProc.cxx:1425:    tgt.mhtdc_tof4121 = sci->mhtdc_factor_ch_to_ns*( 0.5*(srt.tdc_sc41l[0]+srt.tdc_sc41r[0])  - 0.5*(srt.tdc_sc21l[0]+srt.tdc_sc21r[0]) ) + sci->mhtdc_offset_41_21;
+TFRSAnlProc.cxx:1429:    tgt.mhtdc_tof4221 = sci->mhtdc_factor_ch_to_ns*( 0.5*(srt.tdc_sc42l[0]+srt.tdc_sc42r[0])  - 0.5*(srt.tdc_sc21l[0]+srt.tdc_sc21r[0]) ) + sci->mhtdc_offset_42_21;
+TFRSAnlProc.cxx:1433:    tgt.mhtdc_tof4321 = sci->mhtdc_factor_ch_to_ns*( 0.5*(srt.tdc_sc43l[0]+srt.tdc_sc43r[0])  - 0.5*(srt.tdc_sc21l[0]+srt.tdc_sc21r[0]) ) + sci->mhtdc_offset_43_21;
+TFRSAnlProc.cxx:1437:    tgt.mhtdc_tof3121 = sci->mhtdc_factor_ch_to_ns*( 0.5*(srt.tdc_sc31l[0]+srt.tdc_sc31r[0])  - 0.5*(srt.tdc_sc21l[0]+srt.tdc_sc21r[0]) ) + sci->mhtdc_offset_31_21;
+TFRSAnlProc.cxx:1441:    tgt.mhtdc_tof8121 = sci->mhtdc_factor_ch_to_ns*( 0.5*(srt.tdc_sc81l[0]+srt.tdc_sc81r[0])  - 0.5*(srt.tdc_sc21l[0]+srt.tdc_sc21r[0]) ) + sci->mhtdc_offset_81_21;
+TFRSAnlProc.cxx:1445:    tgt.mhtdc_tof4122 = sci->mhtdc_factor_ch_to_ns*( 0.5*(srt.tdc_sc41l[0]+srt.tdc_sc41r[0])  - 0.5*(srt.tdc_sc22l[0]+srt.tdc_sc22r[0]) ) + sci->mhtdc_offset_41_22;
+TFRSAnlProc.cxx:1449:    tgt.mhtdc_tofM0121 = sci->mhtdc_factor_ch_to_ns*( 0.5*(srt.tdc_scM01l[0]+srt.tdc_scM01r[0])  - 0.5*(srt.tdc_sc21l[0]+srt.tdc_sc21r[0]) ) + sci->mhtdc_offset_M01_21;
+TFRSAnlProc.cxx:1453:    tgt.mhtdc_tofM0122 = sci->mhtdc_factor_ch_to_ns*( 0.5*(srt.tdc_scM01l[0]+srt.tdc_scM01r[0])  - 0.5*(srt.tdc_sc22l[0]+srt.tdc_sc22r[0]) ) + sci->mhtdc_offset_M01_22;
+TFRSAnlProc.cxx:1755:      tgt.vftx_tof_S21_S41_calib[i] = tgt.vftx_tof_S21_S41[i]/1000. + sci->vftx_offset_2141;
+TFRSAnlProc.cxx:1762:      tgt.vftx_tof_S22_S41_calib[i] = tgt.vftx_tof_S22_S41[i]/1000. + sci->vftx_offset_2241;
+TFRSAnlProc.cxx:1769:      tgt.vftx_tof_S21_S42_calib[i] = tgt.vftx_tof_S21_S42[i]/1000. + sci->vftx_offset_2142;
+TFRSAnlProc.cxx:1776:      tgt.vftx_tof_S22_S42_calib[i] = tgt.vftx_tof_S22_S42[i]/1000. + sci->vftx_offset_2242;
+TFRSAnlProc.cxx:1783:      tgt.vftx_tof_S21_S8_calib[i] = tgt.vftx_tof_S21_S8[i]/1000. + sci->vftx_offset_218;
+TFRSAnlProc.cxx:1790:      tgt.vftx_tof_S22_S8_calib[i] = tgt.vftx_tof_S22_S8[i]/1000. + sci->vftx_offset_228;
+TFRSAnlProc.cxx:2182:      tgt.sci_mdqd_e_21 = sqrt( (srt.de_mqdc_21l - sci->le_mqdc_a_21[0]) * sci->le_mqdc_a_21[1] * (srt.de_mqdc_21r - sci->re_mqdc_a_21[0]) * sci->re_mqdc_a_21[1]);
+TFRSAnlProc.cxx:2190:      tgt.sci_mdqd_e_22 = sqrt( (srt.de_mqdc_22l - sci->le_mqdc_a_22[0]) * sci->le_mqdc_a_22[1] * (srt.de_mqdc_22r - sci->re_mqdc_a_22[0]) * sci->re_mqdc_a_22[1]);
+TFRSAnlProc.cxx:2198:      tgt.sci_mdqd_e_41 = sqrt( (srt.de_mqdc_41l - sci->le_mqdc_a_41[0]) * sci->le_mqdc_a_41[1] * (srt.de_mqdc_41r - sci->re_mqdc_a_41[0]) * sci->re_mqdc_a_41[1]);
+TFRSAnlProc.cxx:2206:      tgt.sci_mdqd_e_42 = sqrt( (srt.de_mqdc_42l - sci->le_mqdc_a_42[0]) * sci->le_mqdc_a_42[1] * (srt.de_mqdc_42r - sci->re_mqdc_a_42[0]) * sci->re_mqdc_a_42[1]);
+TFRSAnlProc.cxx:2214:      tgt.sci_mdqd_e_81 = sqrt( (srt.de_mqdc_81l - sci->le_mqdc_a_81[0]) * sci->le_mqdc_a_81[1] * (srt.de_mqdc_81r - sci->re_mqdc_a_81[0]) * sci->re_mqdc_a_81[1]);
+TFRSAnlProc.cxx:2349:	    tgt.sci_e[idx] = sqrt( (tgt.sci_l[idx] - sci->le_a[0][idx]) * sci->le_a[1][idx]
+TFRSAnlProc.cxx:2350:	   			  * (tgt.sci_r[idx] - sci->re_a[0][idx]) * sci->re_a[1][idx]);
+TFRSAnlProc.cxx:2351:	   //tgt.sci_e[idx] = (tgt.sci_r[idx] - sci->re_a[0][idx]);
+TFRSAnlProc.cxx:2372:	       sum += sci->x_a[i][idx] * power;
+TFRSAnlProc.cxx:2390:   tgt.sci_tofll2 = srt.dt_21l_41l*sci->tac_factor[2] - sci->tac_off[2] ;   /* S41L- S21L */  // tac_off is essentially unnecessary (even confusing)
+TFRSAnlProc.cxx:2391:   tgt.sci_tofrr2 = srt.dt_21r_41r*sci->tac_factor[3] - sci->tac_off[3] ;   /* S41R- S21R */  // tac_off is essentially unnecessary (even confusing)
+TFRSAnlProc.cxx:2395:     tgt.sci_tof2        =   (sci->tof_bll2 * tgt.sci_tofll2 + sci->tof_a2 + sci->tof_brr2 * tgt.sci_tofrr2)/2.0 ;  // tof_a2  is essentially unnecessary (even confusing) = 0
+TFRSAnlProc.cxx:2408:   tgt.sci_tofll3 = srt.dt_42l_21l*sci->tac_factor[5] - sci->tac_off[5] ;   /* S42L- S21L */  // tac_off is essentially unnecessary (even confusing)
+TFRSAnlProc.cxx:2409:   tgt.sci_tofrr3 = srt.dt_42r_21r*sci->tac_factor[6] - sci->tac_off[6] ;   /* S42R- S21R */  // tac_off is essentially unnecessary (even confusing)
+TFRSAnlProc.cxx:2413:     tgt.sci_tof3        =   (sci->tof_bll3 * tgt.sci_tofll3 + sci->tof_a3 + sci->tof_brr3 * tgt.sci_tofrr3)/2.0 ;  // tof_a3  is essentially unnecessary (even confusing) = 0
+TFRSAnlProc.cxx:2426:   tgt.sci_tofll4 = srt.dt_21l_81l*sci->tac_factor[9] - sci->tac_off[9] ;     /* S81L- S21L */  // tac_off is essentially unnecessary (even confusing)
+TFRSAnlProc.cxx:2427:   tgt.sci_tofrr4 = srt.dt_21r_81r*sci->tac_factor[10] - sci->tac_off[10] ;   /* S82R- S21R */  // tac_off is essentially unnecessary (even confusing)
+TFRSAnlProc.cxx:2431:     tgt.sci_tof4        =   (sci->tof_bll4 * tgt.sci_tofll4 + sci->tof_a4 + sci->tof_brr4 * tgt.sci_tofrr4)/2.0 ;  // tof_a4  is essentially unnecessary (even confusing) = 0
+TFRSAnlProc.cxx:2442:   tgt.sci_tofll5 = srt.dt_22l_41l*sci->tac_factor[12] - sci->tac_off[12] ;     /* S41L- S22L */  // tac_off is essentially unnecessary (even confusing)
+TFRSAnlProc.cxx:2443:   tgt.sci_tofrr5 = srt.dt_22r_41r*sci->tac_factor[13] - sci->tac_off[13] ;     /* S41R- S22R */  // tac_off is essentially unnecessary (even confusing)
+TFRSAnlProc.cxx:2447:     tgt.sci_tof5        =   (sci->tof_bll5 * tgt.sci_tofll5 + sci->tof_a5 + sci->tof_brr5 * tgt.sci_tofrr5)/2.0 ;  // tof_a5  is essentially unnecessary (even confusing) = 0
+TFRSAnlProc.cxx:2459:   tgt.sci_tofll6 = srt.dt_22l_81l*sci->tac_factor[14] - sci->tac_off[14] ;     /* S81L- S22L */  // tac_off is essentially unnecessary (even confusing)
+TFRSAnlProc.cxx:2460:   tgt.sci_tofrr6 = srt.dt_22r_81r*sci->tac_factor[15] - sci->tac_off[15] ;     /* S81R- S22R */  // tac_off is essentially unnecessary (even confusing)
+TFRSAnlProc.cxx:2464:     tgt.sci_tof6        =   (sci->tof_bll6 * tgt.sci_tofll6 + sci->tof_a6 + sci->tof_brr6 * tgt.sci_tofrr6)/2.0 ;  // tof_a6  is essentially unnecessary (even confusing) = 0

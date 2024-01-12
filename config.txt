@@ -1,0 +1,13 @@
+# The name of the experiment has to set here
+# If your setup file is setup_XXX_YYY_ZZZ.C
+# then you should write here  NameExperiment XXX_YYY_ZZZ
+# when you setup a new setup_XXX_YY_ZZ.C please define
+# the function inside of the file with the same name as the file
+
+#NameExperiment      000_2023
+#NameExperiment      sxxx_xxx_2023
+#NameExperiment      engrun_008_2023_new
+#NameExperiment      engrun_027_2023
+#NameExperiment      engrun_029_2023
+#NameExperiment      engrun_032_2023
+NameExperiment      engrun_033_2023
