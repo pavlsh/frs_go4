@@ -1,7 +1,7 @@
 /* This file is to get included in the main UnpackProc class header file 
  * which expands the `TGo4EventProcessor` class.
  * DECL macros are to be expanded in the header file, and IMPL macros in implementation (cxx, cpp, cc) files.
- * This code is extremely hacked, as to keep the FOOT structure as reminiscent of R3B unpacking, while keeping
+ * This code is written this way to keep the FOOT structure as reminiscent of R3B unpacking, while keeping
  * the direct changes to main UnpackProc/UnpackEvent classes minimal.
  * -- Martin Bajzek [M.Bajzek@gsi.de], 11.01.2024 */
 
@@ -17,7 +17,7 @@ typedef uint16_t u16;
 typedef uint8_t u8; 
 
 #define _countof(x) ( sizeof x / sizeof *x )
-/* H4cKs0r */
+/* H4cKz */
 #define __EMPTY()
 #define __DEREF(x) x __EMPTY()
 #define __EVAL(...) __VA_ARGS__
@@ -30,9 +30,8 @@ typedef uint8_t u8;
 #define FOOT_PROC_ID 2
 #define N_CHANNELS 320
 
-/* 11 header words, 5 trailer words */ \
+/* 11 header words, 5 trailer words */
 #define N_WORDS (FOOT_RAW_DATA_WORDS + 16)
-
 
 union foot_ch_data {
 	struct {
@@ -58,7 +57,7 @@ union foot_ch_data {
 		int ctrl_id = psubevt->GetControl(); \
 		int id = ctrl_id; \
 		u32* pdata = (u32*)psubevt->GetDataField(); \
-		int lenMax = (psubevt->GetDlen()-2)/2;	 \
+		int lenMax = (psubevt->GetDlen()-2)/2; \
 		if(lenMax != 6 && lenMax != 5) { \
 			fprintf(stderr, "Matched FOOT WR %d, but the subevent size is %d. FOOT WR should be 5 or 6 words long.\n", id, lenMax); \
 			return; \
@@ -66,10 +65,10 @@ union foot_ch_data {
 	 \
 	 \
 		Bool_t* ts_bad = fOut->foot[id].ts_bad; \
-		if((*pdata & 0x10000) == 1) *ts_bad = 1; \
+		if(*pdata & 0x10000) *ts_bad = 1; \
 	 \
-		/* Time stamp payload is unpacked from the data itself. \
-		 * Same as the sync check values. Here just check if the structure is correct. */ \
+		/* Timestamp payload is unpacked from the data itself. \
+		 * Same as the sync check values. Here just check if the structure is correct + bad ts bitflag. */ \
 	 \
 		if(++pdata; (*pdata & 0xffff0000) != 0x03e10000) { \
 			fprintf(stderr, "FOOT WR: %d, missed the 0x03e1 tag. Word is: 0x%08x\n", id, *pdata); \
@@ -87,7 +86,7 @@ union foot_ch_data {
 			fprintf(stderr, "FOOT WR: %d, missed the 0x06e1 tag. Word is: 0x%08x\n", id, *pdata); \
 			return; \
 		} \
-		if(++pdata; (*pdata & 0xfff00000) != 0xf1a00000) { \
+		if(++pdata; lenMax == 6 && ((*pdata & 0xfff00000) != 0xf1a00000)) { \
 			fprintf(stderr, "FOOT WR: %d, sync check missed the 0xf1a tag. Word is 0x%0x. FOOT Event flagged as bad.\n", id, *pdata); \
 			*ts_bad = 1; \
 			return; \
@@ -233,7 +232,7 @@ union foot_ch_data {
 			return; \
 		} \
 	 \
-		u16 ts_status = 0xfff & static_cast<u16>(footer >> 24);  \
+		u16 ts_status = 0xfff & static_cast<u16>(footer >> 24); \
 		u8 sync_value = 0xf & static_cast<u8>(footer >> 16); \
 	 \
 		footer = *rp++; \
@@ -283,8 +282,8 @@ union foot_ch_data {
 /* (2) Expand this in the implementation file. */
 #define UNPACK_FOOT_PROC_IMPL(UNPACK_EVENT_CLASS, UNPACK_PROC_CLASS) \
 	\
-	__EVAL (__UNPACK_FOOT_WR_IMPL__) ( __DEREF(UNPACK_EVENT_CLASS), __DEREF(UNPACK_PROC_CLASS) )\
-	__EVAL (__UNPACK_FOOT_DATA_IMPL__) ( __DEREF(UNPACK_EVENT_CLASS), __DEREF(UNPACK_PROC_CLASS) )\
+	__EVAL (__UNPACK_FOOT_WR_IMPL__) ( __DEREF(UNPACK_EVENT_CLASS), __DEREF(UNPACK_PROC_CLASS) ) \
+	__EVAL (__UNPACK_FOOT_DATA_IMPL__) ( __DEREF(UNPACK_EVENT_CLASS), __DEREF(UNPACK_PROC_CLASS) ) \
 	\
 	void UNPACK_PROC_CLASS::BuildFootEvent(UNPACK_EVENT_CLASS* fOut, TGo4MbsEvent* fInput) { \
 		fInput->ResetIterator(); \
