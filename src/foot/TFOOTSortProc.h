@@ -10,15 +10,19 @@
 
 struct TFootPtr;
 class TFOOTSortEvent;
-class TH2;
+class TH1;
 
 class TFOOTSortProc
 {
 public:
-  TFOOTSortProc(){;};
-  ~TFOOTSortProc(){;};
-  void  FillEvent(TFOOTParameter* fp, TFOOTSortEvent* oev, TFootPtr * iev);
-  void  FillHist(TFOOTSortEvent* oev, TH2 *h);
+  TFOOTSortProc();
+  virtual ~TFOOTSortProc();
+
+  TH1 * h[8];  //!
+  TFOOTParameter *par;
+  void  FillEvent( TFOOTSortEvent* oev, TFootPtr * iev);
+private:
+  void  FillHist(TFOOTSortEvent* oev );
 };
 
 #endif //TFOOTSORTPROC_H

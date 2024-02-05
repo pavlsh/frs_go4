@@ -111,8 +111,8 @@ Bool_t TFRSSortProc::BuildEvent(TGo4EventElement* output)
 
   /* ### TA Ionization Chamber dE:  */
   //  tgt->ic_de = src->vme0[13][16] & 0xfff;
-   /* ### MW anodes:  MWPC 11, 31, 21, 22, 51, 71, 81, 82 */
- // only 8 MW are used, but keep index of the array 13 as it was
+  /* ### MW anodes:  MWPC 11, 31, 21, 22, 51, 71, 81, 82 */
+  // only 8 MW are used, but keep index of the array 13 as it was
   for(int i=0;i<13;i++){
     tgt->mw_an[i] = src->vme_frs[8][i] & 0xfff;
   }
@@ -134,44 +134,44 @@ Bool_t TFRSSortProc::BuildEvent(TGo4EventElement* output)
       tgt->mw_yd[i+4] = src->vme_frs[9][3+i*4] & 0xfff;
     }
 
- /*
+  /*
   // ### MW anodes:
   for(int i=0;i<13;i++)
-    tgt->mw_an[i] = src->vme_frs[8][i] & 0xfff;
+  tgt->mw_an[i] = src->vme_frs[8][i] & 0xfff;
 
   // ### MW cathodes:
   // from MW11 -> MW31
   for(int i=0;i<4;++i)
-    {
-      tgt->mw_xr[i] = src->vme_frs[8][16+i*4] & 0xfff;
-      tgt->mw_xl[i] = src->vme_frs[8][17+i*4] & 0xfff;
-      tgt->mw_yu[i] = src->vme_frs[8][18+i*4] & 0xfff;
-      tgt->mw_yd[i] = src->vme_frs[8][19+i*4] & 0xfff;
-    }
+  {
+  tgt->mw_xr[i] = src->vme_frs[8][16+i*4] & 0xfff;
+  tgt->mw_xl[i] = src->vme_frs[8][17+i*4] & 0xfff;
+  tgt->mw_yu[i] = src->vme_frs[8][18+i*4] & 0xfff;
+  tgt->mw_yd[i] = src->vme_frs[8][19+i*4] & 0xfff;
+  }
   // from MW41 -> MW51
   for(int i=0;i<3;++i)
-    {
-      tgt->mw_xr[i+4] = src->vme_frs[9][0+i*4] & 0xfff;
-      tgt->mw_xl[i+4] = src->vme_frs[9][1+i*4] & 0xfff;
-      tgt->mw_yu[i+4] = src->vme_frs[9][2+i*4] & 0xfff;
-      tgt->mw_yd[i+4] = src->vme_frs[9][3+i*4] & 0xfff;
-    }
+  {
+  tgt->mw_xr[i+4] = src->vme_frs[9][0+i*4] & 0xfff;
+  tgt->mw_xl[i+4] = src->vme_frs[9][1+i*4] & 0xfff;
+  tgt->mw_yu[i+4] = src->vme_frs[9][2+i*4] & 0xfff;
+  tgt->mw_yd[i+4] = src->vme_frs[9][3+i*4] & 0xfff;
+  }
   // skip MW61
   //putting MW61 all to zero (09.07.2018)
-      tgt->mw_xr[7] = 0;
-      tgt->mw_xl[7] = 0;
-      tgt->mw_yu[7] = 0;
-      tgt->mw_yd[7] = 0;
+  tgt->mw_xr[7] = 0;
+  tgt->mw_xl[7] = 0;
+  tgt->mw_yu[7] = 0;
+  tgt->mw_yd[7] = 0;
 
   // from MW71 -> MWB2
   for(int i=0;i<5;++i)
-    {
-      tgt->mw_xr[i+8] = src->vme_frs[9][12+i*4] & 0xfff;
-      tgt->mw_xl[i+8] = src->vme_frs[9][13+i*4] & 0xfff;
-      tgt->mw_yu[i+8] = src->vme_frs[9][14+i*4] & 0xfff;
-      tgt->mw_yd[i+8] = src->vme_frs[9][15+i*4] & 0xfff;
-    }
- */
+  {
+  tgt->mw_xr[i+8] = src->vme_frs[9][12+i*4] & 0xfff;
+  tgt->mw_xl[i+8] = src->vme_frs[9][13+i*4] & 0xfff;
+  tgt->mw_yu[i+8] = src->vme_frs[9][14+i*4] & 0xfff;
+  tgt->mw_yd[i+8] = src->vme_frs[9][15+i*4] & 0xfff;
+  }
+  */
 
 
   //////////////////////////////////////
@@ -293,12 +293,12 @@ Bool_t TFRSSortProc::BuildEvent(TGo4EventElement* output)
 
   // TPC time ref TDCs
   for(int i=0; i<8; i++){
-      tgt->tpc_nhit_timeref[i] = src->nhit_v1190_tpcs2[ (v1190_channel_timeref[i]) ];
-      for(int ihit=0; ihit<(tgt->tpc_nhit_timeref[i]); ihit++){
-        if(ihit<64){
-          tgt->tpc_timeref[i][ihit] = src->leading_v1190_tpcs2[ (v1190_channel_timeref[i]) ][ihit];
-        }
+    tgt->tpc_nhit_timeref[i] = src->nhit_v1190_tpcs2[ (v1190_channel_timeref[i]) ];
+    for(int ihit=0; ihit<(tgt->tpc_nhit_timeref[i]); ihit++){
+      if(ihit<64){
+	tgt->tpc_timeref[i][ihit] = src->leading_v1190_tpcs2[ (v1190_channel_timeref[i]) ][ihit];
       }
+    }
   }
 
 
@@ -520,9 +520,9 @@ Bool_t TFRSSortProc::BuildEvent(TGo4EventElement* output)
   }
 
 
-   //---MUSIC configuration. 2x TUM-MUSIC from FRS crate and 1 TRavel-MUsic from TRMU crate (2020/Jan/23, YT)
-   for(int i=0;i<8;i++)
-     {
+  //---MUSIC configuration. 2x TUM-MUSIC from FRS crate and 1 TRavel-MUsic from TRMU crate (2020/Jan/23, YT)
+  for(int i=0;i<8;i++)
+    {
       tgt->music_e1[i] = (src->vme_frs[10][i]) & 0xfff;   //
       tgt->music_e2[i] = (src->vme_frs[10][8+i]) & 0xfff; //
       tgt->music_e3[i] = (src->vme_trmu_adc[i])        ; // Travel-MUSIC (from special VME crate)
@@ -536,31 +536,31 @@ Bool_t TFRSSortProc::BuildEvent(TGo4EventElement* output)
       tgt->music_t4[i] = 0; // no signal connected 
 
     }
-   for(int i=0;i<4;i++)
-     {
-       tgt->music_e4[i] = (src->vme_frs[12][16+i]) & 0xfff;   // Prototype MUSIC with only 4 anodes
-     }
-   for(int i=0;i<4;i++)
-     {
-       tgt->music_e4[4+i] = 0;   
-     }
+  for(int i=0;i<4;i++)
+    {
+      tgt->music_e4[i] = (src->vme_frs[12][16+i]) & 0xfff;   // Prototype MUSIC with only 4 anodes
+    }
+  for(int i=0;i<4;i++)
+    {
+      tgt->music_e4[4+i] = 0;   
+    }
 
-    //---LaBr3 configuration
-    for(int i = 0; i < 8; i++)
+  //---LaBr3 configuration
+  for(int i = 0; i < 8; i++)
     {
       tgt->labr_e_raw[i] = (src->vme_trmu_adc[i+8]);
       tgt->labr_t_raw[i] = (src->vme_trmu_tdc[i+8]);
     }
-//----Active Stopper
-for(int i = 0; i<32; i++)
- {
-	 tgt->dssd_adc_det1[i] = src->vme_actstop[10][i] & 0xfff;
-	 tgt->dssd_adc_det2[i] = src->vme_actstop[12][i] & 0xfff;
-	 tgt->dssd_adc_det3[i] = src->vme_actstop[14][i] & 0xfff;
-	 tgt->dssd_adc_det4[i] = src->vme_actstop[16][i] & 0xfff;
-	 tgt->dssd_adc_det5[i] = src->vme_actstop[18][i] & 0xfff;
-	 tgt->dssd_adc_det6[i] = src->vme_actstop[20][i] & 0xfff;
- }
+  //----Active Stopper
+  for(int i = 0; i<32; i++)
+    {
+      tgt->dssd_adc_det1[i] = src->vme_actstop[10][i] & 0xfff;
+      tgt->dssd_adc_det2[i] = src->vme_actstop[12][i] & 0xfff;
+      tgt->dssd_adc_det3[i] = src->vme_actstop[14][i] & 0xfff;
+      tgt->dssd_adc_det4[i] = src->vme_actstop[16][i] & 0xfff;
+      tgt->dssd_adc_det5[i] = src->vme_actstop[18][i] & 0xfff;
+      tgt->dssd_adc_det6[i] = src->vme_actstop[20][i] & 0xfff;
+    }
 
   /* ### MUSIC temp & pressure:  */
   // tgt->music_pres[0] = 0;
@@ -587,12 +587,15 @@ for(int i = 0; i<32; i++)
   // for(int i = 0; i<100; i++)
   for(int i = 0; i<10; i++)
     {
-    tgt->mrtof_stop[i] = src->leading_v1190_mrtof[9][i];
+      tgt->mrtof_stop[i] = src->leading_v1190_mrtof[9][i];
     }
   tgt->mrtof_spill = src->leading_v1190_mrtof[10][0];
   tgt->mrtof_ts = (src->mrtof_ts-21600-31557600*51)%(24*3600);
   //printf("unix time %02d mrtof_ts %02d\n", src->mrtof_ts, tgt->mrtof_ts);
 
+  // FOOT Part
+  TFOOTSortEvent * tgt1 = dynamic_cast < TFOOTSortEvent * > (tgt);
+  this->TFOOTSortProc::FillEvent(tgt1,src->foot);
   return kTRUE;
 } // end of ProcSort
 

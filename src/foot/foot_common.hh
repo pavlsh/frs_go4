@@ -9,5 +9,9 @@
 #define UNPACK_FOOT_WR_SUBEV
 
 
+/* Some histogram parameters*/
+
+#define FOOT_ADC_MAX 4096
+#define FOOT_ADC_BINS 1024
 
 #endif /* __GO4_FOOT_UNPACK_COMMON_HH__ */

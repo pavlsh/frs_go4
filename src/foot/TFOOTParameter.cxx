@@ -9,7 +9,7 @@ TFOOTParameter::TFOOTParameter() : TGo4Parameter("FOOTParameter")
 {
   for(int i=0;i<8;i++)
     {
-      order[i] = i;
+      order[i] = i+10;
       flip[i] = false;
     }
 }
@@ -18,7 +18,7 @@ TFOOTParameter::TFOOTParameter(const char* name) : TGo4Parameter(name)
 {
   for(int i=0;i<8;i++)
     {
-      order[i] = i;
+      order[i] = i+10;
       flip[i] = false;
     }
 }

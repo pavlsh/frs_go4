@@ -10,7 +10,7 @@
 
 class TFRSSortEvent;
 
-class TFRSSortProc : public TFRSBasicProc,TFOOTSortProc {
+class TFRSSortProc : public TFRSBasicProc, public TFOOTSortProc {
 public:
   TFRSSortProc() ;
   TFRSSortProc(const char* name);

@@ -1,6 +1,6 @@
 #general make file for any Go4 module
 ## I have other part for go4 Makefile parts on my home PC
--include $(GO4SYS)/share/Makefile.config
+-include $(GO4SYS)/Makefile.config
 
 # for compile example under cygwin, 
 # relative path to GO4SYS directory should be specified
@@ -83,5 +83,5 @@ install: all
 	cp libGo4UserAnalysis* ../exec
 #	cp MainUserAnalysis ../exec
 ## I have other part for go4 Makefile parts on my home PC
-include $(GO4SYS)/share/Makefile.rules
+include $(GO4SYS)/Makefile.rules
 ##include foot/foot.mk

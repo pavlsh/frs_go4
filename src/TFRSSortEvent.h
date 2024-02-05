@@ -9,7 +9,7 @@
 class TFRSSortProc;
 class TGo4FileSource;
 
-class TFRSSortEvent : public TGo4EventElement,TFOOTSortEvent {
+class TFRSSortEvent : public TGo4EventElement, public TFOOTSortEvent {
 public:
   TFRSSortEvent();
   TFRSSortEvent(const char* name);
