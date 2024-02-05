@@ -6,10 +6,11 @@
 #include "TFRSVftxSetting.h"
 
 #include "define.hh"
+#include "foot/TFOOTSortProc.h"
 
 class TFRSSortEvent;
 
-class TFRSSortProc : public TFRSBasicProc {
+class TFRSSortProc : public TFRSBasicProc,TFOOTSortProc {
 public:
   TFRSSortProc() ;
   TFRSSortProc(const char* name);

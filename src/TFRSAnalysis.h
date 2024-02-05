@@ -4,7 +4,7 @@
 #include "Go4Analysis/TGo4Analysis.h"
 
 #include "TFRSParameter.h"
-
+#include "foot/TFOOTParameter.h"
 class TH1;
 class TH2;
 
@@ -75,12 +75,12 @@ private:
 //  TModParameter * ModPar; //!
   TMRTOFMSParameter* MRtofPar; //!
   TRangeParameter* fRangePar;//!
+  TFOOTParameter* fFOOTPar;//!
 
   
   TH1I                  *fSize;      //!
   Int_t                 fEvents;     //!
   Int_t                 fLastEvent;  //!
-
   ClassDef(TFRSAnalysis,1)
 };
 #endif //TFRSANALYSIS_H

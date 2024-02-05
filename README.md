@@ -1,4 +1,13 @@
-# Go4_2023
+# FRS Go4 with FOOT detectors
+
+## Notes about build sistem
+Now Makefile use submakfile to build code in foot directory.
+
+## Notes about FOOT addressing
+
+For now detector ID in FOOT data is bases on MBS control value.
+This (control)ID is used as array index; so on unpacking step
+we need to operate with array of FOOT data with lengh of max(ID).
 
 
 
@@ -13,12 +22,10 @@ Already a pro? Just edit this README.md and make it your own. Want to make it ea
 - [ ] [Create](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#create-a-file) or [upload](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#upload-a-file) files
 - [ ] [Add files using the command line](https://docs.gitlab.com/ee/gitlab-basics/add-file.html#add-a-file-using-the-command-line) or push an existing Git repository with the following command:
 
-```
-cd existing_repo
+```existing_repo
 git remote add origin https://git.gsi.de/c.hornung/go4_2023.git
 git branch -M main
-git push -uf origin main
-```
+git push -uf origin main`T``
 
 ## Integrate with your tools
 

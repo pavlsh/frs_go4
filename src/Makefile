@@ -1,6 +1,6 @@
 #general make file for any Go4 module
-
--include $(GO4SYS)/Makefile.config
+## I have other part for go4 Makefile parts on my home PC
+-include $(GO4SYS)/share/Makefile.config
 
 # for compile example under cygwin, 
 # relative path to GO4SYS directory should be specified
@@ -11,18 +11,23 @@ endif
 # comment to switch on optimization
 DOOPTIMIZATION = false
 
-all: build
+.PHONY: all build submakes clean
+
+all: build submakes
+
+submakes :
+	$(MAKE) -C foot
 
 -include Module.mk
 
 build: all-$(MODULE_NAME)
 
 clean-obj: clean-obj-$(MODULE_NAME)
-	@echo "Clean objects in $(MODULE_NAME)"
+	$(info Clean objects in $(MODULE_NAME))
 
 clean: clean-$(MODULE_NAME)
-	@echo "Clean everything in $(MODULE_NAME)"
-	rm -f ../exec/createlml.pl
+	$(info Clean everything in $(MODULE_NAME))
+	$(RM) ../exec/createlml.pl
 	rm -f ../exec/runGo4.sh
 	rm -f ../exec/createGo4Trees.sh
 	rm -f ../exec/inc
@@ -33,6 +38,7 @@ clean: clean-$(MODULE_NAME)
 	rm -f ../exec/MainUserAnalysis
 	rm -f libGo4UserAnalysis*
 	rm -f MainUserAnalysis
+	$(MAKE) -C foot clean
 
 ifdef DOMAP
 ifeq ($(wildcard $(GO4MAP)),)
@@ -76,6 +82,6 @@ install: all
 	ln -s ../source/setup.C ../exec
 	cp libGo4UserAnalysis* ../exec
 #	cp MainUserAnalysis ../exec
-
-include $(GO4SYS)/Makefile.rules
-include foot/foot.mk
+## I have other part for go4 Makefile parts on my home PC
+include $(GO4SYS)/share/Makefile.rules
+##include foot/foot.mk

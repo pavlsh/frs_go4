@@ -4,11 +4,12 @@
 #include "TGo4EventElement.h"
 
 #include "define.hh"
+#include "foot/TFOOTSortEvent.h"
 
 class TFRSSortProc;
 class TGo4FileSource;
 
-class TFRSSortEvent : public TGo4EventElement {
+class TFRSSortEvent : public TGo4EventElement,TFOOTSortEvent {
 public:
   TFRSSortEvent();
   TFRSSortEvent(const char* name);

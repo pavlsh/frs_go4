@@ -1,6 +1,7 @@
+*~
 src/*.o
 src/*.so
-src/*.d
+*.d
 libGo4UserAnalysis*
 # In case of hanging swap files ... *wink*
 src/*.swp

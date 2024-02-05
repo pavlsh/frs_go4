@@ -18,7 +18,7 @@
 
 #include <sstream>
 #include <fstream>
-
+#include <dlfcn.h>
 //***********************************************************
 TFRSAnalysis::TFRSAnalysis()
   : fMbsEvent(0), fSize(0), fEvents(0), fLastEvent(0)
@@ -48,7 +48,6 @@ TFRSAnalysis::TFRSAnalysis(const char* lmd,
   // out1: output file name of first analysis step  (*.root)
   // out2: output file name of second analysis step (*.root)
   std::cout << "**** TFRSAnalysis: Create ****" << std::endl;
-
   // Enable autosave. Autosave is done when analysis loop is stopped
   // or intervall os over.
   SetAutoSave(kFALSE);   // no autosave
@@ -184,6 +183,9 @@ TFRSAnalysis::TFRSAnalysis(const char* lmd,
 
   MRtofPar = new TMRTOFMSParameter("MRTOFMSPar");
   AddParameter(MRtofPar);
+
+  fFOOTPar = new TFOOTParameter("FOOTPar");
+  AddParameter(fFOOTPar);
 }
 
 Bool_t TFRSAnalysis::InitEventClasses()
